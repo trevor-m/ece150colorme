@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">ColorMe</string>
+    <string name="title_home">Home</string>
+    <string name="title_addphotos">Add Photos</string>
+    <string name="title_gallery">Gallery</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

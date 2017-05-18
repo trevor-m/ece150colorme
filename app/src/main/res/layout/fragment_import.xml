@@ -1,0 +1,26 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="ece150.colorme.ImportFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <Button
+        android:id="@+id/button_camera_import"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="From Camera"
+        android:drawableLeft="@drawable/ic_photo_camera_black_24px"
+        android:gravity="center"/>
+
+    <Button
+        android:id="@+id/button_file_import"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="From My Photos"
+        android:drawableLeft="@drawable/ic_photo_library_black_24px"
+        android:gravity="center"/>
+
+</LinearLayout>
