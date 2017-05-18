@@ -29,8 +29,7 @@ public class MainActivity extends AppCompatActivity {
                     fragment = new ImportFragment();
                     break;
                 case R.id.navigation_gallery:
-                    // TODO
-                    //fragment = new GalleryFragment();
+                    fragment = new GalleryFragment();
                     break;
             }
 
