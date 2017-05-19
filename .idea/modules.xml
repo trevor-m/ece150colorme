@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ColorMe.iml" filepath="$PROJECT_DIR$/ColorMe.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ece150colorme.iml" filepath="$PROJECT_DIR$/ece150colorme.iml" />
     </modules>
   </component>
 </project>

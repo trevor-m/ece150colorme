@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <TextView
+        android:id="@+id/ShareText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="Save and Share Your Work!"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="30dp" />
+
+    <ImageView
+        android:id="@+id/Drawn_Image"
+        android:layout_width="307dp"
+        android:layout_height="175dp"
+        android:scaleType="centerCrop"
+        android:layout_gravity="center"
+        android:padding="20dp"
+        app:srcCompat="@drawable/f18d0eb7c07aeed350dd34b4a8fcaf0e"
+        android:layout_weight="0.19" />
+
+    <Button
+        android:id="@+id/button8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save To Gallery" />
+
+    <Button
+        android:id="@+id/SMS"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SMS" />
+
+    <Button
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="E-Mail" />
+
+    <Button
+        android:id="@+id/Animate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Animate It!" />
+
+    <android.support.design.widget.BottomNavigationView
+        android:padding="15dp"
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:menu="@menu/navigation" />
+
+
+</LinearLayout>
