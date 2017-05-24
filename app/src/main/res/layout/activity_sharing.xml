@@ -16,7 +16,7 @@
         android:textSize="30dp" />
 
     <ImageView
-        android:id="@+id/Drawn_Image"
+        android:id="@+id/DrawnImage"
         android:layout_width="307dp"
         android:layout_height="175dp"
         android:scaleType="centerCrop"
@@ -26,7 +26,7 @@
         android:layout_weight="0.19" />
 
     <Button
-        android:id="@+id/button8"
+        android:id="@+id/SaveGallery"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Save To Gallery" />
@@ -38,24 +38,16 @@
         android:text="SMS" />
 
     <Button
-        android:id="@+id/email"
+        android:id="@+id/SendEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="E-Mail" />
 
     <Button
-        android:id="@+id/Animate"
+        android:id="@+id/AnimateIt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Animate It!" />
-
-    <android.support.design.widget.BottomNavigationView
-        android:padding="15dp"
-        android:id="@+id/navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        app:menu="@menu/navigation" />
 
 
 </LinearLayout>
