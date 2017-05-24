@@ -28,6 +28,9 @@ public class PreviewActivity extends AppCompatActivity {
         Imgproc.cvtColor(rgba, edges, Imgproc.COLOR_RGB2GRAY, 4);
         Imgproc.Canny(edges, edges, 80, 100);
 
+        // invert colors
+        Core.bitwise_not(edges, edges);
+
         // Convert to bitmap
         Bitmap resultBitmap = Bitmap.createBitmap(edges.cols(), edges.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(edges, resultBitmap);
