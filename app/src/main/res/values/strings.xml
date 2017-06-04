@@ -3,4 +3,14 @@
     <string name="title_home">Home</string>
     <string name="title_addphotos">Add Photos</string>
     <string name="title_gallery">Gallery</string>
+    <!-- Painting -->
+    <string name="start_new">New</string>
+    <string name="brush">Brush</string>
+    <string name="erase">Erase</string>
+    <string name="save">Save</string>
+    <string name="paint">Paint</string>
+    <!-- Brush sizes -->
+    <string name="sml">Small</string>
+    <string name="med">Medium</string>
+    <string name="lrg">Large</string>
 </resources>

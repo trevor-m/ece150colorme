@@ -1,15 +1,12 @@
 package ece150.colorme;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-
-import org.opencv.android.BaseLoaderCallback;
-import org.opencv.android.LoaderCallbackInterface;
-import org.opencv.android.OpenCVLoader;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.android.Utils;
@@ -23,10 +20,19 @@ public class PreviewActivity extends AppCompatActivity {
         Mat rgba = new Mat();
         Utils.bitmapToMat(bitmap, rgba);
 
-        // apply Canny edge detector
+        // Convert to grayscale
         Mat edges = new Mat(rgba.size(), CvType.CV_8UC1);
         Imgproc.cvtColor(rgba, edges, Imgproc.COLOR_RGB2GRAY, 4);
-        Imgproc.Canny(edges, edges, 80, 100);
+
+        // Determine threshold values
+        MatOfDouble mu = new MatOfDouble();
+        MatOfDouble stddev = new MatOfDouble();
+        Core.meanStdDev(edges, mu, stddev);
+        double threshold1 = mu.get(0, 0)[0];
+        double threshold2 = stddev.get(0, 0)[0];
+
+        // apply Canny edge detector
+        Imgproc.Canny(edges, edges, threshold1, threshold2);
 
         // invert colors
         Core.bitwise_not(edges, edges);
@@ -43,7 +49,7 @@ public class PreviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_preview);
 
         // Get input image
-        mImage = getIntent().getParcelableExtra("image");
+        mImage = Global.newImage; //getIntent().getParcelableExtra("image");
         // Find edges
         mEdges = detectEdges(mImage);
 
@@ -62,8 +68,15 @@ public class PreviewActivity extends AppCompatActivity {
         findViewById(R.id.button_preview_accept).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //
-
+                // Save this image
+                // Start preview activity
+                Intent drawingIntent = new Intent(PreviewActivity.this, DrawingActivity.class);
+                Global.newImage = mEdges;
+                //drawingIntent.putExtra("edges", mEdges);
+                startActivity(drawingIntent);
+                // Go back to MainActivity
+                //finish();
+                // TODO: switch fragment
             }
         });
     }
