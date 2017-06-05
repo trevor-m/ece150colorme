@@ -3,6 +3,9 @@
     <string name="title_home">Home</string>
     <string name="title_addphotos">Add Photos</string>
     <string name="title_gallery">Gallery</string>
+    <!-- Directories -->
+    <string name="inprogress_dir">inprogress</string>
+    <string name="gallery_dir">gallery</string>
     <!-- Painting -->
     <string name="start_new">New</string>
     <string name="brush">Brush</string>

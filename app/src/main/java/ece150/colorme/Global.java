@@ -8,4 +8,6 @@ import android.graphics.Bitmap;
 
 public class Global {
     public static Bitmap newImage;
+    public static Bitmap continueDrawing;
+    public static Bitmap shareImage;
 }

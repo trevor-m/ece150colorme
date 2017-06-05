@@ -30,7 +30,9 @@ public class DrawingView extends View {
     private boolean erase=false;
 
     // The drawing activity
-    public DrawingActivity mActivity;
+    public DrawingActivity mActivity = null;
+    // The saved drawing to continue from
+    public Bitmap continueBitmap = null;
 
     public DrawingView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -92,8 +94,13 @@ public class DrawingView extends View {
         super.onSizeChanged(w, h, oldw, oldh);
         // Recreate bitmap and canvas with new size values
         canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-        mActivity.setEdgeOverlay();
+        if(mActivity != null)
+            mActivity.setEdgeOverlay();
         drawCanvas = new Canvas(canvasBitmap);
+        if(continueBitmap != null) {
+            Paint paint = new Paint(Paint.FILTER_BITMAP_FLAG);
+            drawCanvas.drawBitmap(continueBitmap, 0, 0, paint);
+        }
     }
 
     @Override
@@ -110,6 +117,7 @@ public class DrawingView extends View {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 drawPath.moveTo(touchX, touchY);
+                //TODO: drawCanvas.drawCircle();
                 break;
             case MotionEvent.ACTION_MOVE:
                 drawPath.lineTo(touchX, touchY);

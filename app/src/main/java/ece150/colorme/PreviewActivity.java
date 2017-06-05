@@ -1,5 +1,7 @@
 package ece150.colorme;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +12,11 @@ import android.widget.ImageView;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.android.Utils;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.UUID;
 
 public class PreviewActivity extends AppCompatActivity {
 
@@ -68,15 +75,16 @@ public class PreviewActivity extends AppCompatActivity {
         findViewById(R.id.button_preview_accept).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Save this image
-                // Start preview activity
+                // End this stack
+                finish();
+
+                // Start drawing activity
                 Intent drawingIntent = new Intent(PreviewActivity.this, DrawingActivity.class);
                 Global.newImage = mEdges;
+                Global.continueDrawing = null;
+                drawingIntent.putExtra("id", UUID.randomUUID().toString());
                 //drawingIntent.putExtra("edges", mEdges);
                 startActivity(drawingIntent);
-                // Go back to MainActivity
-                //finish();
-                // TODO: switch fragment
             }
         });
     }
