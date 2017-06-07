@@ -12,10 +12,13 @@ import android.widget.ImageView;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.android.Utils;
+import org.opencv.core.CvType.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class PreviewActivity extends AppCompatActivity {
@@ -41,8 +44,12 @@ public class PreviewActivity extends AppCompatActivity {
         // apply Canny edge detector
         Imgproc.Canny(edges, edges, threshold1, threshold2);
 
+        // Dilate to increase size of edges
+        Imgproc.dilate(edges, edges, Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5)));
+
         // invert colors
         Core.bitwise_not(edges, edges);
+
 
         // Convert to bitmap
         Bitmap resultBitmap = Bitmap.createBitmap(edges.cols(), edges.rows(), Bitmap.Config.ARGB_8888);

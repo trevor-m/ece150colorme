@@ -3,23 +3,34 @@ package ece150.colorme;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.graphics.Bitmap;
+import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.FileNotFoundException;
+import java.net.URI;
+import java.util.Date;
+import java.util.UUID;
 
 
 public class ImportFragment extends Fragment implements View.OnClickListener {
@@ -27,6 +38,46 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_IMAGE_FROM_FILESYSTEM = 2;
     static final int MY_PERMISSIONS_REQUEST_READ_MEDIA = 3;
+    String mCurrentPhotoPath;
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = UUID.randomUUID().toString();
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        takePictureIntent.putExtra(MediaStore.EXTRA_SCREEN_ORIENTATION, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(getActivity(),
+                        "ece150.colorme.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
+        }
+    }
 
     public ImportFragment() {
         // Required empty public constructor
@@ -50,9 +101,13 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         if(v.getId() == R.id.button_camera_import) {
             // get new image using camera
-            Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+            //Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            //startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+            dispatchTakePictureIntent();
 
+            //Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            //cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+           // startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
         }
         else if(v.getId() == R.id.button_file_import) {
             // Request permission to read files
@@ -86,14 +141,26 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == MainActivity.RESULT_OK) {
             // Get the image that the camera took
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            // Store image in MainActivity
-            //((MainActivity)getActivity()).setNewImageBitmap(imageBitmap);
+            Bitmap cameraBitmap = null;
+            File imgFile = new File(mCurrentPhotoPath);
+            // Full resolution
+            if(imgFile.exists()){
+                cameraBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            }
+            else {
+                // Thumbnail
+                Bundle extras = data.getExtras();
+                cameraBitmap = (Bitmap) extras.get("data");
+            }
+            //rotate 90 to right
+            Matrix matrix = new Matrix();
+            matrix.postRotate(90);
+            Bitmap imageBitmap = Bitmap.createBitmap(cameraBitmap, 0, 0,
+                    cameraBitmap.getWidth(), cameraBitmap.getHeight(),
+                    matrix, true);
 
             // Start preview activity
             Intent previewIntent = new Intent(getActivity(), PreviewActivity.class);
-            //previewIntent.putExtra("image", imageBitmap);
             Global.newImage = imageBitmap;
             startActivity(previewIntent);
         }
@@ -110,7 +177,6 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
                     throw new RuntimeException(e);
                 }
             }
-                    //imageBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), data.getData());
 
             // Start preview activity
             Intent previewIntent = new Intent(getActivity(), PreviewActivity.class);
