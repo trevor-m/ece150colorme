@@ -18,6 +18,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,7 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
                 photoFile = createImageFile();
             } catch (IOException ex) {
                 // Error occurred while creating the File
+                Log.wtf("error3", "could not create camera photo");
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
@@ -153,15 +155,15 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
                 cameraBitmap = (Bitmap) extras.get("data");
             }
             //rotate 90 to right
-            Matrix matrix = new Matrix();
+            /*Matrix matrix = new Matrix();
             matrix.postRotate(90);
             Bitmap imageBitmap = Bitmap.createBitmap(cameraBitmap, 0, 0,
                     cameraBitmap.getWidth(), cameraBitmap.getHeight(),
-                    matrix, true);
+                    matrix, true);*/
 
             // Start preview activity
             Intent previewIntent = new Intent(getActivity(), PreviewActivity.class);
-            Global.newImage = imageBitmap;
+            Global.newImage = cameraBitmap;
             startActivity(previewIntent);
         }
         else if (requestCode == REQUEST_IMAGE_FROM_FILESYSTEM && resultCode == MainActivity.RESULT_OK) {
@@ -172,8 +174,10 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
                 try {
                     imageBitmap = android.provider.MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
                 } catch (FileNotFoundException e) {
+                    Log.wtf("error", e.getCause());
                     throw new RuntimeException(e);
                 } catch (IOException e) {
+                    Log.wtf("error2", e.getCause());
                     throw new RuntimeException(e);
                 }
             }

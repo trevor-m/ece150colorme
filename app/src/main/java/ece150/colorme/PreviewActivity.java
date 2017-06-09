@@ -45,7 +45,7 @@ public class PreviewActivity extends AppCompatActivity {
         Imgproc.Canny(edges, edges, threshold1, threshold2);
 
         // Dilate to increase size of edges
-        Imgproc.dilate(edges, edges, Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5)));
+        Imgproc.dilate(edges, edges, Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(6, 6)));
 
         // invert colors
         Core.bitwise_not(edges, edges);
